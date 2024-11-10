@@ -43,6 +43,8 @@ dependencies:
   fluttertoast:
   carousel_slider: ^5.0.0
   google_maps_flutter: ^2.5.3
+  flutter_bloc: ^8.0.0
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -209,7 +211,7 @@ flutter:
     - assets/images/view_12.png
     - assets/images/signal_1.png
     - assets/images/wifi_11.png
-    - assets/images/signal_1.pngz
+    - assets/images/signal_1.png
     - assets/images/half_battery_1.png
     - assets/images/smartphone_call_11.png
     - assets/images/wifi_11.png
@@ -253,6 +255,16 @@ flutter:
     - assets/vectors/ellipse_20_x2.svg
     - assets/images/right-arrow-icon-removebg-preview.png
     - assets/images/leftarrow-removebg-preview.png
+    - assets/images/fruits.jpg
+    - assets/images/vegetables.png
+    - assets/images/foods.jpg
+    - assets/images/milk.jpeg
+    - assets/images/fish.webp
+    - assets/images/flowers.jpg
+    - assets/images/grocessry.jpg
+    - assets/images/dress.jpg
+    - assets/images/transport.jpg
+    - assets/images/toys.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

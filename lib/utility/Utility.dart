@@ -17,70 +17,14 @@ class Utility {
 
   DateTime selectedDate = DateTime.now();
 
-  String? journey_text,
-      empname,
-      username,
-      password,
-      passbase64,
-      fingerpass,
-      Loginbool,
-      employeeid,
-      changed_typevalue,
-      selecttypevalue,
-      idvisittype,
-      filedofficertype,
-      trackattendance;
+  String? token;
 
-  String? mobileno,
-      emp_image,
-      designation,
-      band,
-      id_level,
-      headquarters,
-      reporting_to;
-  String? label1type, label2type, label3type, label4type, label5type,
-      label6type, label7type, label8type, label9type, label10type, label11type,
-      label12type, label13type, label14type, label15type;
-  String? company_id, latlong_minutes;
-  late String company_logo;
-  String? todayCount,
-      mtdCount,
-      overallCount,
-      approvedclaimCount,
-      pendingclaimCount,
-      startjourney_time,
-      claim_parentId,
-      claim_type,
-      typeName,
-      fromdate,
-      fromdatesend,
-      todate,
-      todatesend;
-  bool fingerValue = false;
-  bool timerbool = false;
-  String? claimbill_edit,
-      id_claimDetails,
-      id_employee,
-      claim_date,
-      allowance_type,
-      id_travelallowance,
-      id_otherallowance,
-      amount,
-      limit_amount,
-      bill,
-      description,
-      type,
-      id_mode,
-      modeName,
-      otherAlowanceId,
-      otherAlowanceName,
-      modeNameotherAlowanceName,
-      displayclaimdate;
-  bool attendanceBool = false;
-  bool newuser = false;
 
   GetUserdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    token = (prefs.getString('token') ?? '');
+  }
 
 
     void fluttertoast(text) {
@@ -112,10 +56,10 @@ class Utility {
                       'assets/loader.gif',
                       width: 50,
                     ),*/
-                      const CircularProgressIndicator(
+                       CircularProgressIndicator(
                         strokeWidth: 3,
                         valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+                        AlwaysStoppedAnimation<Color>(HexColor(Colorscommon.greenlite)),
                       ),
                       const SizedBox(
                         width: 10,
@@ -456,4 +400,4 @@ class Utility {
       return outputDate;
     }
   }
-}
+

@@ -13,6 +13,7 @@ class Address extends StatefulWidget {
 class _AddressState extends State<Address> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return  Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -93,8 +94,8 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: SizedBox(
-                        width: 273,
-                        height: 20, // Adjust this value to your desired height
+                        width: screenWidth * 0.7, // Set width as 70% of the screen width
+                        height: 20, // Keep height as desired
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: 'Enter your name',
@@ -110,6 +111,8 @@ class _AddressState extends State<Address> {
                       ),
                     ),
                     Container(
+                      width: 16,
+                      height: 16,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
@@ -117,10 +120,6 @@ class _AddressState extends State<Address> {
                             'assets/images/user_32.png',
                           ),
                         ),
-                      ),
-                      child: Container(
-                        width: 16,
-                        height: 16,
                       ),
                     ),
                   ],
@@ -158,7 +157,7 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 1, 8, 0),
                       child: SizedBox(
-                        width: 273,
+                        width: screenWidth * 0.7,
                         height: 20,
                         child: TextField(
                           decoration: InputDecoration(
@@ -226,7 +225,7 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: SizedBox(
-                        width: 273,
+                        width: screenWidth * 0.7,
                         height: 20,
                         child: TextField(
                           decoration: InputDecoration(
@@ -291,7 +290,7 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: SizedBox(
-                        width: 273,
+                        width: screenWidth * 0.7,
                         height: 20,
                         child: TextField(
                           decoration: InputDecoration(
@@ -356,7 +355,7 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: SizedBox(
-                        width: 273,
+                        width: screenWidth * 0.7,
                         height: 20,
                         child: TextField(
                           decoration: InputDecoration(
@@ -421,7 +420,7 @@ class _AddressState extends State<Address> {
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: SizedBox(
-                        width: 273,
+                        width: screenWidth * 0.7,
                         height: 20,
                         child: TextField(
                           decoration: InputDecoration(

@@ -5,6 +5,7 @@ import 'package:buyer_app/UserInterface/Notification/nofication_page.dart';
 import 'package:buyer_app/UserInterface/Profile/profile_page.dart';
 import 'package:buyer_app/UserInterface/Search/search_page.dart';
 import 'package:buyer_app/Utility/CommonColor.dart';
+import 'package:buyer_app/userinterfacebloc/home/homepageUI.dart';
 import 'package:buyer_app/utility/Colors.dart';
 import 'package:fancy_bottom_navigation_2/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';

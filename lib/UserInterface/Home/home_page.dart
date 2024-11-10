@@ -1,10 +1,15 @@
-import 'package:buyer_app/UserInterface/Home/Milk/Milk.dart';
-import 'package:buyer_app/UserInterface/Home/Vegtables/Vegtables.dart';
+import 'dart:convert';
+
+import 'package:buyer_app/Modelclass/Category.dart';
+import 'package:buyer_app/UserInterface/Home/Product/Products.dart';
 import 'package:buyer_app/Utility/CommonColor.dart';
 import 'package:buyer_app/utility/Colors.dart';
+import 'package:buyer_app/utility/URL.dart';
+import 'package:buyer_app/utility/Utility.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart'as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +28,64 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int _current = 0;
+  Utility utility = Utility();
+  String? _token;
+  List<Category> categories =[];
+  List categoryname = [];
+  var category;
+
+  @override
+  void initState(){
+    super.initState();
+    utility.GetUserdata().then((_){
+      _token = utility.token;
+      print('_token$_token');
+      _categoriesAPI();
+    });
+  }
+
+  Future<void>_categoriesAPI()async{
+    try{
+      String url = CommonURL.URL+CommonURL.categories;
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $_token',
+        },
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Successful response
+        var jsonData = jsonDecode(response.body);
+        print('Data: $jsonData');
+        categories = (jsonData as List)
+            .map((data) => Category.fromJson(data))
+            .toList();
+
+
+        for (category in categories) {
+          print('Category: ${category.name}, Active: ${category.active}');
+        }
+
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Map<String, String> categoryImageMap = {
+    'பழங்கள்': 'fruits.jpg',
+    'காய்கறி மற்றும் கீரை வகைகள்': 'vegetables.png',
+    'உணவு வகைகள்': 'foods.jpg',
+    'துணி வகைகள்': 'dress.jpg',
+    'பால் சார்ந்த பொருட்கள்': 'milk.jpeg',
+    'மீன்கள் மற்றும் நண்டு': 'fish.webp',
+    'பூக்கள்': 'flowers.jpg',
+    'மளிகை பொருட்கள்': 'grocessry.jpg',
+    'போக்குவரத்து சார்ந்தவை': 'transport.jpg',
+    'பொம்மைகள்': 'toys.jpg',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +116,9 @@ class _HomePageState extends State<HomePage> {
           // mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Carousel slider wrapped in a Container with height to control positioning
             Container(
               height: 180.0, // Adjust the height as needed
-              //margin: EdgeInsets.only(top: 5.0), // Add margin to control spacing from the top
+              //margin: EdgeInsets.only(top: 5.0),
               child: CarouselSlider(
                 items: imgList
                     .map((item) => Container(
@@ -113,195 +175,102 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: HexColor(Colorscommon.whitecolor),
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(3, 3, 3, 12.5),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        'assets/images/gettyimages_153946385_ca_1_ccfaad_9_be_44325_afc_434_b_305_adc_0_d_1.png',
-                                      ),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    width: 154,
-                                    height: 80,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                                child: Text(
-                                  'Vegetables',
-                                  style: GoogleFonts.getFont(
-                                    'Roboto',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: HexColor(Colorscommon.greenlite),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(11.6, 0, 10.6, 7.5),
-                                child: Text(
-                                  'Click the view all button to see all vegtables items',
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.getFont(
-                                    'Roboto',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 8,
-                                    height: 1.5,
-                                    color: HexColor(Colorscommon.black),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(3.5, 0, 0, 0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF68BB59),
-                                    borderRadius: BorderRadius.circular(1),
-                                  ),
-                                  child: Container(
-                                    // Set the width and height of the container to control the TextButton size
-                                    width: 80, // Adjust the width to your desired size
-                                    height: 30, // Adjust the height to your desired size
-                                    padding: EdgeInsets.fromLTRB(9.6, 1.5, 12.1, 1.5),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        print('vegetable');
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Vegtables()));
-                                      },
-                                      child: Text(
-                                        'View All',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 8,
-                                          height: 1.5,
-                                          color: HexColor(Colorscommon.whitecolor),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  var category = categories[index];
+                  return Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    width: 180,
                     child: Container(
                       decoration: BoxDecoration(
                         color: HexColor(Colorscommon.whitecolor),
                       ),
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(2.5, 3, 2.5, 12.5),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      'assets/images/image.jpeg',
-                                    ),
-                                  ),
-                                ),
-                                child: Container(
-                                  width: 155,
-                                  height: 80,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  'assets/images/${categoryImageMap[category.name]}', // Use mapped image name
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 0, 3.1, 7),
-                              child: Text(
-                                'Milk',
-                                style: GoogleFonts.getFont(
-                                  'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: HexColor(Colorscommon.greenlite),
-                                ),
+                            width: 154,
+                            height: 80,
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                            child: Text(
+                              category.name, // Category name dynamically
+                              style: GoogleFonts.getFont(
+                                'Roboto',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                color: HexColor(Colorscommon.greenlite),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(11.6, 0, 10.6, 7.5),
+                            child: Text(
+                              'Click the view all button to see all items',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.getFont(
+                                'Roboto',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 8,
+                                height: 1.5,
+                                color: HexColor(Colorscommon.black),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10.1, 0, 13.1, 7.5),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(3.5, 0, 0, 0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF68BB59),
+                              borderRadius: BorderRadius.circular(1),
+                            ),
+                            width: 80,
+                            height: 30,
+                            child: TextButton(
+                              onPressed: () {
+                                print(category.name);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Products(id:category.id, name : category.name)),
+                                );
+                                //Navigator.pushNamed(context, '/dashboard_Page');
+                              },
                               child: Text(
-                                'Click the view all button to see all Milk items',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.getFont(
-                                  'Roboto',
-                                  fontWeight: FontWeight.w400,
+                                'View All',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 8,
                                   height: 1.5,
-                                  color: HexColor(Colorscommon.black),
+                                  color: HexColor(Colorscommon.whitecolor),
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.fromLTRB(3.5, 0, 0, 0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF68BB59),
-                                  borderRadius: BorderRadius.circular(1),
-                                ),
-                                child: Container(
-                                  width: 80, // Adjust the width to your desired size
-                                  height: 30, // Adjust the height to your desired size
-                                  padding: const EdgeInsets.fromLTRB(9.6, 1.5, 12.1, 1.5),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      print('Milk');
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Milk()));
-                                    },
-                                    child: Text(
-                                      'View All',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 8,
-                                        height: 1.5,
-                                        color: HexColor(Colorscommon.whitecolor),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
+
             Container(
-              margin: EdgeInsets.fromLTRB(22.5, 0, 22.5, 8),
+              margin: const EdgeInsets.fromLTRB(22.5, 0, 22.5, 8),
               width: double.infinity,
               child: Container(
                 decoration: BoxDecoration(
@@ -312,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.fromLTRB(0, 9, 0.1, 10),
                   child: Center(
                     child: Text(
-                      'VEGETABLES',
+                      'காய்கறி மற்றும் கீரை வகைகள்',
                       style: GoogleFonts.getFont(
                         'Roboto',
                         fontWeight: FontWeight.w700,
@@ -646,7 +615,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.fromLTRB(0.3, 9, 0, 10),
                   child: Center(
                     child: Text(
-                      'ICE CREAM & MILK',
+                      'பால் சார்ந்த பொருட்கள்',
                       style: GoogleFonts.getFont(
                         'Roboto',
                         fontWeight: FontWeight.w700,
